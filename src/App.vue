@@ -1,27 +1,38 @@
 <script setup>
 
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import TodoItem from './components/TodoItem.vue'
+import axios from 'axios'
 
 const todos = ref([])
 const newText = ref('')
 
-function addTodo() {
+// 초기 데이터 로드
+onMounted(async () => {
+  const res = await axios.get('/api/todos/')
+  todos.value = res.data
+})
+
+async function addTodo() {
   if (!newText.value.trim()) return
-  todos.value.push({
-    id: Date.now(),
+  const res = await axios.post('/api/todos', {
     text: newText.value.trim(),
     completed: false
   })
+  todos.value.push(res.data)
   newText.value = ''
 }
 
-function toggleTodo(id) {
+async function toggleTodo(id) {
   const t = todos.value.find(t => t.id === id)
-  if (t) t.completed = !t.completed
+  if (!t) return
+  const res = await axios.patch(`/api/todos/${id}`, {
+    completed: !t.completed
+  })
+  t.completed = res.data.completed
 }
-
-function removeTodo(id) {
+async function removeTodo(id) {
+  await axios.delete(`/api/todos/${id}`)
   todos.value = todos.value.filter(t => t.id !== id)
 }
 
