@@ -33,4 +33,13 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}/vue-docker-todo:latest
             ghcr.io/${{ github.repository }}/vue-docker-todo:${{ github.sha }}
+      
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
 
+      - name: Deploy to Firebase Hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          cd /github/workspace   # repo 루트로 이동
+          firebase deploy --only hosting --project your-gcp-project-id
