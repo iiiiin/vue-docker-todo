@@ -41,5 +41,5 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
-          cd /github/workspace   # repo 루트로 이동
-          firebase deploy --only hosting --project your-gcp-project-id
+          cd /github/vue-docker-todo   # repo 루트로 이동
+          firebase deploy --only hosting --project vue-docker-todo
