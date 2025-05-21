@@ -71,6 +71,43 @@ docker build -t vue-todo:latest .
 3. Firebase CLI 설치
 4. Firebase Hosting 배포
 
+### AWS Amplify Hosting
+
+이 프로젝트는 AWS Amplify Console을 통해 “dist/” 폴더에 빌드된 정적 SPA를 자동으로 빌드·배포할 수 있습니다.
+
+- AWS 계정 (Amplify, IAM 권한 필요)
+- GitHub 리포지토리(`your-username/vue-docker-todo`)  
+- GitHub → AWS Amplify Console 연결 권한
+
+### 🚀 배포 단계
+
+1. **Amplify Console 접속**  
+   AWS Management Console → “Amplify” → Amplify Console → **Host web app**
+
+2. **GitHub 리포 연결**  
+   - Git provider: **GitHub**  
+   - 리포지토리: `your-username/vue-docker-todo`  
+   - 브랜치: `main` → **Next**
+
+3. **빌드 설정 확인**  
+   ```yaml
+   version: 1
+   frontend:
+     phases:
+       preBuild:
+         commands:
+           - npm ci
+       build:
+         commands:
+           - npm run build
+     artifacts:
+       baseDirectory: dist
+       files:
+         - '**/*'
+     cache:
+       paths:
+         - node_modules/**/*
+
 ### 🌐 Firebase Hosting
 
 ### 초기 설정
